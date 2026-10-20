@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>penerapan-analisis-data-ai | Saskia Hafizha</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen">
+
+  <!-- Header / Navbar -->
+  <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <i class="fa-solid fa-chart-line text-blue-500 text-2xl"></i>
+        <div>
+          <h1 class="text-xl font-bold tracking-wide">penerapan-analisis-data-ai</h1>
+          <p class="text-xs text-slate-400">By <span class="text-blue-400 font-medium">saskiahf7</span> | Case Study PT Maju Bersama</p>
+        </div>
+      </div>
+      <span class="text-xs bg-blue-900 text-blue-300 px-3 py-1 rounded-full border border-blue-700">CRISP-DM Framework</span>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
+
+    <!-- Case Overview & Metrics -->
+    <section class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+      <h2 class="text-lg font-semibold text-blue-400 mb-2"><i class="fa-solid fa-circle-info mr-2"></i> Ringkasan Kasus Bisnis</h2>
+      <p class="text-slate-300 text-sm leading-relaxed mb-6">
+        PT Maju Bersama mencatatkan peningkatan pendapatan (<em>Sales Revenue</em>), namun terjadi penurunan <em>Net Profit</em> sebesar <strong>14%</strong> serta lonjakan piutang (<em>Accounts Receivable</em>) hingga <strong>300%</strong>. Dashboard ini menyajikan analisis deskriptif, diagnostik, dan simulasi model prediksi <em>Late Payment</em> untuk mitigasi risiko piutang.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700">
+          <p class="text-xs text-slate-400">Total Transaksi (2 Tahun)</p>
+          <p class="text-2xl font-bold text-white mt-1">4.218 <span class="text-xs font-normal text-slate-400">Invoice</span></p>
+          <span class="text-xs text-emerald-400 font-medium"><i class="fa-solid fa-arrow-up"></i> Revenue Naik</span>
+        </div>
+
+        <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700">
+          <p class="text-xs text-slate-400">Net Profit</p>
+          <p class="text-2xl font-bold text-rose-400 mt-1">-14.2%</p>
+          <span class="text-xs text-rose-400 font-medium"><i class="fa-solid fa-arrow-down"></i> Penurunan Margin</span>
+        </div>
+
+        <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700">
+          <p class="text-xs text-slate-400">Lonjakan Piutang (AR)</p>
+          <p class="text-2xl font-bold text-amber-400 mt-1">+300%</p>
+          <span class="text-xs text-amber-400 font-medium"><i class="fa-solid fa-triangle-exclamation"></i> Risiko Arus Kas</span>
+        </div>
+
+        <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700">
+          <p class="text-xs text-slate-400">Akurasi Model Prediksi</p>
+          <p class="text-2xl font-bold text-blue-400 mt-1">89.4%</p>
+          <span class="text-xs text-blue-400 font-medium">Random Forest Classifier</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visualizations Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Chart 1: Revenue vs Net Profit -->
+      <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+        <h3 class="text-md font-semibold text-slate-200 mb-4 flex items-center">
+          <i class="fa-solid fa-chart-column text-blue-400 mr-2"></i> Trend Penjualan vs Keuntungan Bersih
+        </h3>
+        <div class="h-64">
+          <canvas id="salesTrendChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 2: Late Payment Status -->
+      <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+        <h3 class="text-md font-semibold text-slate-200 mb-4 flex items-center">
+          <i class="fa-solid fa-pie-chart text-blue-400 mr-2"></i> Proporsi Status Pembayaran Invoice
+        </h3>
+        <div class="h-64 flex justify-center">
+          <canvas id="paymentStatusChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Machine Learning Predictor Simulation -->
+    <section class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg space-y-6">
+      <div>
+        <h2 class="text-lg font-semibold text-blue-400 flex items-center">
+          <i class="fa-solid fa-robot mr-2"></i> Simulasi AI: Prediksi Keterlambatan Pembayaran (Late Payment)
+        </h2>
+        <p class="text-slate-400 text-xs mt-1">Masukkan parameter invoice untuk menguji simulasi risiko kredit pelanggan berdasarkan model Machine Learning.</p>
+      </div>
+
+      <form id="predictionForm" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label class="block text-xs text-slate-300 font-medium mb-2">Batas Kredit Pelanggan (Rp)</label>
+          <input type="number" id="creditLimit" value="5000000" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-300 font-medium mb-2">Persentase Diskon Diberikan (%)</label>
+          <input type="number" id="discount" value="15" max="50" min="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-300 font-medium mb-2">Riwayat Keterlambatan Pelanggan</label>
+          <select id="historyLate" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-blue-500">
+            <option value="0">Tidak Pernah Terlambat (0x)</option>
+            <option value="1">Jarang (1-2x)</option>
+            <option value="3" selected>Sering (>3x)</option>
+          </select>
+        </div>
+
+        <div class="md:col-span-3 flex justify-end">
+          <button type="button" onclick="runPrediction()" class="bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm px-6 py-2.5 rounded-lg shadow-md transition-all flex items-center">
+            <i class="fa-solid fa-bolt mr-2"></i> Jalankan Prediksi AI
+          </button>
+        </div>
+      </form>
+
+      <!-- Prediction Output Box -->
+      <div id="resultBox" class="hidden p-4 rounded-lg border bg-slate-900/90 flex justify-between items-center">
+        <div>
+          <p class="text-xs text-slate-400">Hasil Analisis Model:</p>
+          <p id="resultText" class="text-base font-bold mt-1"></p>
+        </div>
+        <div id="riskBadge" class="px-4 py-1.5 rounded-full text-xs font-bold"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="text-center py-6 border-t border-slate-800 text-slate-500 text-xs">
+    <p>© 2026 penerapan-analisis-data-ai | Created by <a href="https://github.com/saskiahf7" target="_blank" class="text-blue-400 underline">saskiahf7</a></p>
+  </footer>
+
+  <script>
+    // Chart 1: Sales Trend
+    const ctx1 = document.getElementById('salesTrendChart').getContext('2d');
+    new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: ['Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025', 'Q1 2026', 'Q2 2026'],
+        datasets: [
+          { label: 'Revenue (Miliar Rp)', data: [1.2, 1.4, 1.5, 1.8, 1.9, 2.1], borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', fill: true, tension: 0.3 },
+          { label: 'Net Profit (Ratusan Juta)', data: [400, 380, 350, 320, 310, 290], borderColor: '#f43f5e', borderDash: [5, 5], fill: false, tension: 0.3 }
+        ]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8' } } } }
+    });
+
+    // Chart 2: Payment Status
+    const ctx2 = document.getElementById('paymentStatusChart').getContext('2d');
+    new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: ['Tepat Waktu (On-Time)', 'Terlambat < 30 Hari', 'Terlambat Macet (> 30 Hari)'],
+        datasets: [{
+          data: [68, 19, 13],
+          backgroundColor: ['#10b981', '#f59e0b', '#ef4444']
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8' } } } }
+    });
+
+    // AI Prediction Simulation Logic
+    function runPrediction() {
+      const discount = parseFloat(document.getElementById('discount').value);
+      const history = parseInt(document.getElementById('historyLate').value);
+      const resultBox = document.getElementById('resultBox');
+      const resultText = document.getElementById('resultText');
+      const riskBadge = document.getElementById('riskBadge');
+
+      resultBox.classList.remove('hidden');
+
+      if (history >= 3 || discount > 20) {
+        resultText.innerText = 'Risiko Tinggi (High Risk Late Payment)';
+        resultText.className = 'text-base font-bold text-rose-400 mt-1';
+        riskBadge.innerText = 'BERISIKO TERLAMBAT';
+        riskBadge.className = 'px-4 py-1.5 rounded-full text-xs font-bold bg-rose-950 text-rose-300 border border-rose-700';
+      } else {
+        resultText.innerText = 'Risiko Rendah (Low Risk On-Time Payment)';
+        resultText.className = 'text-base font-bold text-emerald-400 mt-1';
+        riskBadge.innerText = 'LANCAR / AMAN';
+        riskBadge.className = 'px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-950 text-emerald-300 border border-emerald-700';
+      }
+    }
+  </script>
+</body>
+</html>
